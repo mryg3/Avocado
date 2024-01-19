@@ -42,22 +42,34 @@ dataset.describe().T
 
 #DATA CLEANING 
 
+st.title('DATA CLEANING')
+
 # Display information about null values before cleaning
-print("Null values before cleaning:")
-print(dataset.isnull().sum())
+st.header("Null values before cleaning: ")
+st.write(dataset.isnull().sum())
 
 # Drop rows with any null values
 avocado_data_cleaned = dataset.dropna()
 
 # Display information about null values after cleaning
-print("\nNull values after cleaning:")
-print(avocado_data_cleaned.isnull().sum())
+st.header("Null values after cleaning: ")
+st.write(avocado_data_cleaned.isnull().sum())
 
 # Drop duplicates
 avocado_data_cleaned = avocado_data_cleaned.drop_duplicates()
 
 #Display columns with missing data
 col_with_missing_data = dataset.columns[dataset.isnull().any()]
-print('Columns with missing data: ')
-print(col_with_missing_data)
+st.header('Columns with missing data: ')
+st.write(col_with_missing_data)
 
+#Fill the missing columns with data using mean
+avocado_data_cleaned['SmallBags'] = avocado_data_cleaned['SmallBags'].fillna(avocado_data_cleaned['SmallBags'].mean())
+avocado_data_cleaned['LargeBags'] = avocado_data_cleaned['LargeBags'].fillna(avocado_data_cleaned['LargeBags'].mean())
+avocado_data_cleaned['XLargeBags'] = avocado_data_cleaned['XLargeBags'].fillna(avocado_data_cleaned['XLargeBags'].mean() )
+
+#Drop unecessary columns
+avocado_data_cleaned = avocado_data_cleaned.drop(['plu4046', 'plu4225', 'plu4770', 'TotalVolume', 'type'], axis=1)
+
+st.subheader('Cleaned Data: ')
+st.write(avocado_data_cleaned)
