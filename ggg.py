@@ -105,28 +105,31 @@ st.write(avocado_data_cleaned)
 #st.pyplot(fig)
 
 # Distribution of Average Price
-fig, ax = plt.subplots(figsize=(4, 4))
-ax.hist(dataset['AveragePrice'], bins=20, color='green', density=True)
-ax.set_title('Distribution of AveragePrice')
-ax.set_xlabel('Average Price')
-ax.set_ylabel('Density')
-st.pyplot(fig)
+if st.button('Show Distribution of Average Price chart'):
+    fig, ax = plt.subplots(figsize=(4, 4))
+    ax.hist(dataset['AveragePrice'], bins=20, color='green', density=True)
+    ax.set_title('Distribution of AveragePrice')
+    ax.set_xlabel('Average Price')
+    ax.set_ylabel('Density')
+    st.pyplot(fig)
 
 # TotalBags and AveragePrice
-fig, ax = plt.subplots(figsize=(4, 4))
-ax.scatter(dataset['TotalBags'], dataset['AveragePrice'], color='brown', alpha=0.5)
-ax.set_title('TotalBags and AveragePrice')
-ax.set_xlabel('Total Bags')
-ax.set_ylabel('Average Price')
-st.pyplot(fig)
+if st.button('Show TotalBags and AveragePrice chart'):
+    fig, ax = plt.subplots(figsize=(4, 4))
+    ax.scatter(dataset['TotalBags'], dataset['AveragePrice'], color='brown', alpha=0.5)
+    ax.set_title('TotalBags and AveragePrice')
+    ax.set_xlabel('Total Bags')
+    ax.set_ylabel('Average Price')
+    st.pyplot(fig)
 
 # Calculate the mean AveragePrice by Region
 average_price_by_region = dataset.groupby('region')['AveragePrice'].mean()
 
 # AveragePrice by Region
-fig, ax = plt.subplots(figsize=(4, 4))
-average_price_by_region.plot(kind='bar', color='yellow')
-ax.set_title('AveragePrice by Region')
-ax.set_xlabel('Region')
-ax.set_ylabel('Average Price')
-st.pyplot(fig)
+if st.button('AveragePrice by Region chart'):
+    fig, ax = plt.subplots(figsize=(10, 4))
+    average_price_by_region.plot(kind='bar', color='yellow')
+    ax.set_title('AveragePrice by Region')
+    ax.set_xlabel('Region')
+    ax.set_ylabel('Average Price')
+    st.pyplot(fig)
