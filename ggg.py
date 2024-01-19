@@ -78,27 +78,55 @@ st.write(avocado_data_cleaned)
 #Show some interesting plots
 
 #Distribution of Average Price
-plt.figure(figsize=(10, 8))
-plt.title('Distribution of AveragePrice')
-plt.hist(dataset['AveragePrice'], bins = 20, color='green',density=True)
-plt.xlabel('Average Price')
-plt.ylabel('Density')
-plt.show()
+#fig, ax = plt.subplots(figsize=(10, 8))
+#ax.title('Distribution of AveragePrice')
+#ax.hist(dataset['AveragePrice'], bins = 20, color='green',density=True)
+#ax.xlabel('Average Price')
+#ax.ylabel('Density')
+#st.pyplot(fig)
 
 #TotalBags and AveragePrice
-plt.figure(figsize=(10, 8))
-plt.title('TotalBags and AveragePrice')
-plt.scatter(dataset['TotalBags'], dataset['AveragePrice'], color= 'brown', alpha=0.5) #alpha allows to see averlapping points easily
-plt.xlabel('Total Bags')
-plt.ylabel('Average Price')
-plt.show()
+#fig, ax = plt.subplots(figsize=(10, 8))
+#ax.title('TotalBags and AveragePrice')
+#ax.scatter(dataset['TotalBags'], dataset['AveragePrice'], color= 'brown', alpha=0.5) #alpha allows to see overlapping points easily
+#ax.xlabel('Total Bags')
+#ax.ylabel('Average Price')
+#st.pyplot(fig)
+
+# Calculate the mean AveragePrice by Region
+#average_price_by_region = dataset.groupby('region')['AveragePrice'].mean()
+
+# Plot the bar plot using Pandas plotting
+#fig, ax = plt.subplots(figsize=(10, 8))
+#average_price_by_region.plot(kind='bar', color='yellow')
+#ax.title('AveragePrice by Region')
+#ax.xlabel('Region')
+#ax.ylabel('Average Price')
+#st.pyplot(fig)
+
+# Distribution of Average Price
+fig, ax = plt.subplots(figsize=(4, 4))
+ax.hist(dataset['AveragePrice'], bins=20, color='green', density=True)
+ax.set_title('Distribution of AveragePrice')
+ax.set_xlabel('Average Price')
+ax.set_ylabel('Density')
+st.pyplot(fig)
+
+# TotalBags and AveragePrice
+fig, ax = plt.subplots(figsize=(4, 4))
+ax.scatter(dataset['TotalBags'], dataset['AveragePrice'], color='brown', alpha=0.5)
+ax.set_title('TotalBags and AveragePrice')
+ax.set_xlabel('Total Bags')
+ax.set_ylabel('Average Price')
+st.pyplot(fig)
 
 # Calculate the mean AveragePrice by Region
 average_price_by_region = dataset.groupby('region')['AveragePrice'].mean()
 
-# Plot the bar plot using Pandas plotting
+# AveragePrice by Region
+fig, ax = plt.subplots(figsize=(4, 4))
 average_price_by_region.plot(kind='bar', color='yellow')
-plt.title('AveragePrice by Region')
-plt.xlabel('Region')
-plt.ylabel('Average Price')
-plt.show()
+ax.set_title('AveragePrice by Region')
+ax.set_xlabel('Region')
+ax.set_ylabel('Average Price')
+st.pyplot(fig)
