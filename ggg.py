@@ -88,7 +88,17 @@ plt.show()
 #TotalBags and AveragePrice
 plt.figure(figsize=(10, 8))
 plt.title('TotalBags and AveragePrice')
-plt.scatter(dataset['TotalBags'], dataset['AveragePrice'], color= 'brown')
+plt.scatter(dataset['TotalBags'], dataset['AveragePrice'], color= 'brown', alpha=0.5) #alpha allows to see averlapping points easily
 plt.xlabel('Total Bags')
+plt.ylabel('Average Price')
+plt.show()
+
+# Calculate the mean AveragePrice by Region
+average_price_by_region = dataset.groupby('region')['AveragePrice'].mean()
+
+# Plot the bar plot using Pandas plotting
+average_price_by_region.plot(kind='bar', color='yellow')
+plt.title('AveragePrice by Region')
+plt.xlabel('Region')
 plt.ylabel('Average Price')
 plt.show()
