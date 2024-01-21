@@ -12,11 +12,11 @@ dataset = pd.read_csv(file_path)
 print(dataset.head())
 
 import streamlit as st
-# Load your dataset
+# Load dataset to streamlit
 file_path = '/Users/antoninazhadan/Documents/programming/Avocado_dataset.csv'
 df = pd.read_csv(file_path)
 
-# Streamlit app
+# Streamlit 
 st.title('Avocado dataset')
 st.image("/Users/antoninazhadan/Documents/programming/cute_avocado.png", caption="Cute Avocado", width=200)
 st.caption('Designed by Antonina Zhadan')
@@ -28,10 +28,18 @@ st.dataframe(df)
 print(f'Name of Columns is: \n {dataset.columns}')
 print('Columns in dataset: '.format(dataset.shape[1]))
 print('Raws in dataset:'.format(dataset.shape[0]))
-# Display the first few rows of the dataset
 
+# First five rows of my dataset
 dataset.head()
+
+#Last five rows of my dataset
+dataset.tail()
+
+#showing the info of each column in my dataset
 dataset.info()
+
+#see the names of columns
+dataset.columns
 
 # Check for and count duplicated rows
 duplicate_count = dataset.duplicated().sum()
