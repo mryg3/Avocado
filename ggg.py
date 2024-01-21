@@ -41,6 +41,11 @@ dataset.info()
 #see the names of columns
 dataset.columns
 
+#rename the columns
+
+dataset.rename(columns={'SmallBags':'Small bags', 'LargeBags':'Large bags', 'XLargeBags':'XL bags'}, inplace=True)
+dataset.columns
+
 # Check for and count duplicated rows
 duplicate_count = dataset.duplicated().sum()
 print(f"Number of duplicated rows: {duplicate_count}")
@@ -73,9 +78,9 @@ st.header('Columns with missing data: ')
 st.write(col_with_missing_data)
 
 #Fill the missing columns with data using mean
-avocado_data_cleaned['SmallBags'] = avocado_data_cleaned['SmallBags'].fillna(avocado_data_cleaned['SmallBags'].mean())
-avocado_data_cleaned['LargeBags'] = avocado_data_cleaned['LargeBags'].fillna(avocado_data_cleaned['LargeBags'].mean())
-avocado_data_cleaned['XLargeBags'] = avocado_data_cleaned['XLargeBags'].fillna(avocado_data_cleaned['XLargeBags'].mean() )
+avocado_data_cleaned['Small bags'] = avocado_data_cleaned['Small bags'].fillna(avocado_data_cleaned['Small bags'].mean())
+avocado_data_cleaned['Large bags'] = avocado_data_cleaned['Large bags'].fillna(avocado_data_cleaned['Large bags'].mean())
+avocado_data_cleaned['XL bags'] = avocado_data_cleaned['XL bags'].fillna(avocado_data_cleaned['XL bags'].mean() )
 
 #Drop unecessary columns
 avocado_data_cleaned = avocado_data_cleaned.drop(['plu4046', 'plu4225', 'plu4770', 'TotalVolume', 'type'], axis=1)
@@ -141,3 +146,83 @@ if st.button('AveragePrice by Region chart'):
     ax.set_xlabel('Region')
     ax.set_ylabel('Average Price')
     st.pyplot(fig)
+    
+#Exploring the data
+
+#I want to see the sum all bags
+# Create a figure and axis
+fig, ax = plt.subplots(figsize=(10, 4))
+
+# Calculate the sum of each bag type across all rows
+total_sum_s_bags = dataset['Small bags'].sum()
+total_sum_l_bags = dataset['Large bags'].sum()
+total_sum_XL_bags = dataset['XL bags'].sum()
+
+# List of bag types and their corresponding sums
+bag_types = ['Small bags', 'Large bags', 'XL bags']
+sums = [total_sum_s_bags, total_sum_l_bags, total_sum_XL_bags]
+
+# Plot the bar chart
+bars = ax.bar(bag_types, sums, color=['red', 'blue', 'black'])
+ax.set_title('Total Sum of Each Bag Type')  # Corrected line
+ax.set_xlabel('Bag Types')
+ax.set_ylabel('Total Sum')
+
+# Display the chart using st.pyplot() based on checkbox state
+show_chart = st.checkbox('Check me to see the chart of total sum of all bags')
+if show_chart:
+    st.pyplot(fig)
+else:
+    st.write('Bar chart is hidden. Click the checkbox to show it.')
+
+# Group by region and calculate the sum of each bag type
+sums_by_region = dataset.groupby('region')[['Small bags', 'Large bags', 'XL bags']].sum()
+
+# Create a figure and axis
+fig, ax = plt.subplots(figsize=(14, 6))
+
+# Plot the bar chart
+sums_by_region.plot(kind='bar', stacked=True, ax=ax, color=['red', 'blue', 'black'])
+ax.set_title('Total Sum of Small, Large, and XL Bags by Region')
+ax.set_xlabel('Region')
+ax.set_ylabel('Total Sum')
+
+
+# Display the chart using st.pyplot()
+st.pyplot(fig)
+
+# Group by 'Date' and calculate the average price
+average_price_over_time = dataset.groupby('Date')['AveragePrice'].mean()
+
+# Create a figure and axis
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# Plot the line chart
+ax.plot(average_price_over_time.index, average_price_over_time.values, color='blue', marker='o')
+ax.set_title('Average Price Over Time')
+ax.set_xlabel('Date')
+ax.set_ylabel('Average Price')
+
+# Rotate x-axis labels for better visibility
+plt.xticks(rotation=45, ha='right')
+
+# Display the chart using st.pyplot()
+st.pyplot(fig)
+
+# Group by 'Date' and calculate the average price
+average_price_over_time = dataset.groupby('Date')['AveragePrice'].mean()
+
+# Create a figure and axis
+fig, ax = plt.subplots(figsize=(12, 6))
+
+# Plot the line chart
+ax.plot(average_price_over_time.index, average_price_over_time.values, color='blue', marker='o')
+ax.set_title('Average Price Over Time')
+ax.set_xlabel('Date')
+ax.set_ylabel('Average Price')
+
+# Rotate x-axis labels for better visibility
+plt.xticks(rotation=45, ha='right')
+
+# Display the chart using st.pyplot()
+st.pyplot(fig)
