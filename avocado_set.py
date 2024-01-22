@@ -12,6 +12,12 @@ dataset = pd.read_csv(file_path)
 # Now i have my dataset
 print(dataset.head())
 
+
+
+########################################################## Data Exploration + Data Wrangling #############################################
+
+
+
 import streamlit as st
 # Load dataset to streamlit
 file_path = '/Users/antoninazhadan/Documents/programming/Avocado_dataset.csv'
@@ -27,14 +33,13 @@ st.caption('Designed by Antonina Zhadan')
 st.header('Avocado Dataset:')
 st.dataframe(df)
 
-# First five rows of my dataset
-dataset.head()
+# Let's see the first five rows
+st.subheader('First five rows of the dataset:')
+st.dataframe(dataset.head())
 
-#Last five rows of my dataset
-dataset.tail()
-
-#showing the info of each column in my dataset
-dataset.info()
+# And the last five rows
+st.subheader('Last five rows of the dataset:')
+st.dataframe(dataset.tail())
 
 #let's see what columns I have
 st.write(f'Name of Columns is: ')
@@ -45,22 +50,24 @@ dataset.rename(columns={'SmallBags':'Small bags', 'LargeBags':'Large bags', 'XLa
 
 # Number of duplicated rows
 duplicate_count = dataset.duplicated().sum()
-st.header("Number of Duplicated Rows:")
+st.subheader("Number of Duplicated Rows:")
 st.write(f"There are {duplicate_count} duplicated rows in the dataset.")
 
 # Summary statistics
 columns_to_display = ['AveragePrice', 'TotalVolume', 'Small bags', 'Large bags', 'XL bags']
-st.header("Summary Statistics:")
+st.subheader("Summary Statistics:")
 st.write(dataset[columns_to_display].describe().T)
 
 
 
 ######################################################### DATA CLEANING ################################################################### 
 
+
+
 st.title('DATA CLEANING')
 
 # Let's see information about null values
-st.header("Null values before cleaning: ")
+st.subheader("Null values before cleaning: ")
 st.write(dataset.isnull().sum())
 
 # Now, I want to drop rows with any null values
@@ -68,7 +75,7 @@ st.text('droped the null values')
 avocado_data_cleaned = dataset.dropna()
 
 # Display information about null values after cleaning
-st.header("Null values after cleaning: ")
+st.subheader("Null values after cleaning: ")
 st.write(avocado_data_cleaned.isnull().sum())
 
 # Drop duplicates
@@ -76,7 +83,7 @@ avocado_data_cleaned = avocado_data_cleaned.drop_duplicates()
 
 #I want to see the columns with missing data
 col_with_missing_data = dataset.columns[dataset.isnull().any()]
-st.header('Columns with missing data: ')
+st.subheader('Columns with missing data: ')
 st.write(col_with_missing_data)
 
 #Filling the missing columns with data using mean
@@ -138,24 +145,27 @@ st.title('Exploring more data:')
 region_counts = dataset['region'].value_counts()
 
 # Let's display the count of each region (first 10 and last 10)
-st.header('First 10 Region Counts')
+st.subheader('First 10 Region Counts')
 st.table(region_counts.head(10))
 
-st.header('Last 10 region counts')
+st.subheader('Last 10 region counts')
 st.table(region_counts.tail(10))
 
 
 #I want to see the sum all bags
 fig, ax = plt.subplots(figsize=(10, 4))
 
+
 # Let's calculate the sum of each bag type in all rows
 total_sum_s_bags = dataset['Small bags'].sum()
 total_sum_l_bags = dataset['Large bags'].sum()
 total_sum_XL_bags = dataset['XL bags'].sum()
 
+
 # List of bag types and their sums
 bag_types = ['Small bags', 'Large bags', 'XL bags']
 sums = [total_sum_s_bags, total_sum_l_bags, total_sum_XL_bags]
+
 
 # Plot the bar chart by Total sum of each bag type
 bars = ax.bar(bag_types, sums, color=['red', 'blue', 'black'])
@@ -170,9 +180,10 @@ if show_chart:
 else:
     st.write('Chart is hidden. Click me to show it.')
 
+
 #Let's convert "Data" into a datetime format
 dataset['Date'] = pd.to_datetime(dataset['Date'])
-# I want to add radio button to select the year
+# I want to add a radio button to select the year
 selected_year = st.radio("Select Year", sorted(dataset['Date'].dt.year.unique()))
 # Let's see the data based on the selected year
 filtered_data = dataset[dataset['Date'].dt.year == selected_year]
@@ -181,11 +192,12 @@ ax.plot(filtered_data['Date'], filtered_data['AveragePrice'], color='blue', mark
 ax.set_title(f'Average Price Over Time - {selected_year}')
 ax.set_xlabel('Date')
 ax.set_ylabel('Average Price')
-st.pyplot(fig)
-
-# In order to see better the chart I'm Rotateting x-labels for better visibility
+# In order to see better the chart, I'm rotating x-labels for better visibility
 plt.xticks(rotation=45, ha='right')
-st.pyplot(fig)
+st.pyplot(plt.gcf(), clear_figure=True)
+# Close the current figure because otherwise we can see two charts(
+plt.close()
+
 
 # Print data types of all columns
 st.write("Data Types of Columns:")
@@ -199,10 +211,11 @@ ax.set_title('Distribution of Bag Types', fontweight='bold', fontsize=14)
 ax.legend()
 st.pyplot(fig)
 
+
 # Making correlation (using only numerical values)
 dataset_numer = dataset.select_dtypes(include=['float64', 'datetime64[ns]'])
 # Let's see the correlation heatmap
-st.header('Correlation Heatmap')
+st.subheader('Correlation Heatmap')
 fig, ax = plt.subplots(figsize=(10, 8))
 heatmap = sns.heatmap(dataset_numer.corr(), annot=True)
 st.pyplot(fig)
