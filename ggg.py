@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Replace 'your_file.csv' with the actual file path
 file_path = '/Users/antoninazhadan/Documents/programming/Avocado_dataset.csv'
@@ -17,12 +18,12 @@ file_path = '/Users/antoninazhadan/Documents/programming/Avocado_dataset.csv'
 df = pd.read_csv(file_path)
 
 # Streamlit 
-st.title('Avocado dataset')
+st.title('vocado Prices and Sales Volume 2015-2023')
 st.image("/Users/antoninazhadan/Documents/programming/cute_avocado.png", caption="Cute Avocado", width=200)
 st.caption('Designed by Antonina Zhadan')
 
 # Display the dataset
-st.subheader('Avocado Prices and Sales Volume 2015-2023:')
+st.subheader('Avocado Dataset:')
 st.dataframe(df)
 
 print(f'Name of Columns is: \n {dataset.columns}')
@@ -44,7 +45,6 @@ dataset.columns
 #rename the columns
 
 dataset.rename(columns={'SmallBags':'Small bags', 'LargeBags':'Large bags', 'XLargeBags':'XL bags'}, inplace=True)
-dataset.columns
 
 # Check for and count duplicated rows
 duplicate_count = dataset.duplicated().sum()
@@ -149,6 +149,19 @@ if st.button('AveragePrice by Region chart'):
     
 #Exploring the data
 
+st.title('Exploring more data:')
+
+# Count occurrences of each region
+region_counts = dataset['region'].value_counts()
+
+# Display the count of each region
+st.header('First 10 Region Counts')
+st.table(region_counts.head(10))
+
+st.header('Last 10 region counts')
+st.table(region_counts.tail(10))
+
+
 #I want to see the sum all bags
 # Create a figure and axis
 fig, ax = plt.subplots(figsize=(10, 4))
@@ -175,27 +188,12 @@ if show_chart:
 else:
     st.write('Bar chart is hidden. Click the checkbox to show it.')
 
-# Group by region and calculate the sum of each bag type
-sums_by_region = dataset.groupby('region')[['Small bags', 'Large bags', 'XL bags']].sum()
-
-# Create a figure and axis
-fig, ax = plt.subplots(figsize=(14, 6))
-
-# Plot the bar chart
-sums_by_region.plot(kind='bar', stacked=True, ax=ax, color=['red', 'blue', 'black'])
-ax.set_title('Total Sum of Small, Large, and XL Bags by Region')
-ax.set_xlabel('Region')
-ax.set_ylabel('Total Sum')
-
-
-# Display the chart using st.pyplot()
-st.pyplot(fig)
-
+dataset['Date'] = pd.to_datetime(dataset['Date'])
 # Group by 'Date' and calculate the average price
 average_price_over_time = dataset.groupby('Date')['AveragePrice'].mean()
 
 # Create a figure and axis
-fig, ax = plt.subplots(figsize=(12, 6))
+fig, ax = plt.subplots(figsize=(18, 10))
 
 # Plot the line chart
 ax.plot(average_price_over_time.index, average_price_over_time.values, color='blue', marker='o')
@@ -209,20 +207,32 @@ plt.xticks(rotation=45, ha='right')
 # Display the chart using st.pyplot()
 st.pyplot(fig)
 
-# Group by 'Date' and calculate the average price
-average_price_over_time = dataset.groupby('Date')['AveragePrice'].mean()
+
+
+# Print data types of all columns
+st.write("Data Types of Columns:")
+st.write(dataset.dtypes)
+
+
+# Select only numeric columns for correlation
+dataset_numeric = dataset.select_dtypes(include=['float64', 'datetime64[ns]'])
+# Display the correlation heatmap
+st.header('Correlation Heatmap')
+fig, ax = plt.subplots(figsize=(10, 8))
+heatmap = sns.heatmap(dataset_numeric.corr(), annot=True)
+st.pyplot(fig)
+
+
 
 # Create a figure and axis
-fig, ax = plt.subplots(figsize=(12, 6))
+fig, ax = plt.subplots(figsize=(10, 6))
 
-# Plot the line chart
-ax.plot(average_price_over_time.index, average_price_over_time.values, color='blue', marker='o')
-ax.set_title('Average Price Over Time')
-ax.set_xlabel('Date')
-ax.set_ylabel('Average Price')
+# Plot the pie chart
+ax.pie([total_sum_s_bags, total_sum_l_bags, total_sum_XL_bags], labels=bag_types, autopct='%.2f%%', startangle=90, shadow=True)
 
-# Rotate x-axis labels for better visibility
-plt.xticks(rotation=45, ha='right')
+# Set chart title and legend
+ax.set_title('Distribution of Bag Types', fontweight='bold', fontsize=14)
+ax.legend()
 
 # Display the chart using st.pyplot()
 st.pyplot(fig)
