@@ -180,7 +180,7 @@ fig, ax = plt.subplots(figsize=(18, 10))
 ax.plot(filtered_data['Date'], filtered_data['AveragePrice'], color='blue', marker='o')
 ax.set_title(f'Average Price Over Time - {selected_year}')
 ax.set_xlabel('Date')
-ax.set_ylabel('Average Price')s
+ax.set_ylabel('Average Price')
 st.pyplot(fig)
 
 # In order to see better the chart I'm Rotateting x-labels for better visibility
