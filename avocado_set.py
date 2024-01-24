@@ -93,7 +93,7 @@ avocado_data_cleaned['XL bags'] = avocado_data_cleaned['XL bags'].fillna(avocado
 
 #I thought and decided to drop some unecessary columns
 avocado_data_cleaned = avocado_data_cleaned.drop(['plu4046', 'plu4225', 'plu4770', 'TotalVolume', 'type'], axis=1)
-
+st.text('I dropped 5 columns: plu4046, plu4225, plu4770, TotalVolume, type')
 st.subheader('Cleaned Data: ')
 st.write(avocado_data_cleaned)
 
@@ -102,6 +102,8 @@ st.write(avocado_data_cleaned)
 ##################################################### SHOWING SOME INTRESTING PLOTS ##########################################################
 
 
+
+st.title('SOME INTRESTING PLOTS')
 
 # Let's see the distribution of Average Price
 if st.button('Show Distribution of Average Price chart'):
@@ -146,6 +148,7 @@ region_counts = dataset['region'].value_counts()
 
 # Let's display the count of each region (first 10 and last 10)
 st.subheader('First 10 Region Counts')
+st.text('How many times each county interacts with avocado')
 st.table(region_counts.head(10))
 
 st.subheader('Last 10 region counts')
@@ -174,7 +177,7 @@ ax.set_xlabel('Bag Types')
 ax.set_ylabel('Total Sum')
 
 # Let's display the chart using st.pyplot and creating a checkbox
-show_chart = st.checkbox('Check me to see the chart of total sum of all bags')
+show_chart = st.checkbox('Click me to see the chart of total sum of all bags')
 if show_chart:
     st.pyplot(fig)
 else:
@@ -183,6 +186,8 @@ else:
 
 #Let's convert "Data" into a datetime format
 dataset['Date'] = pd.to_datetime(dataset['Date'])
+st.subheader('Data based on the selected year')
+st.text('You can choose any year you want to see what changes in Average Price')
 # I want to add a radio button to select the year
 selected_year = st.radio("Select Year", sorted(dataset['Date'].dt.year.unique()))
 # Let's see the data based on the selected year
@@ -215,7 +220,9 @@ st.pyplot(fig)
 # Making correlation (using only numerical values)
 dataset_numer = dataset.select_dtypes(include=['float64', 'datetime64[ns]'])
 # Let's see the correlation heatmap
-st.subheader('Correlation Heatmap')
+st.subheader('Correlation map')
 fig, ax = plt.subplots(figsize=(10, 8))
 heatmap = sns.heatmap(dataset_numer.corr(), annot=True)
 st.pyplot(fig)
+
+st.subheader('Thank you for your attention:)')
